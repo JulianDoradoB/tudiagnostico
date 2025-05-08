@@ -2,29 +2,31 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../appwrite/auth_service.dart'; // Ajusta la ruta si es necesario
 
-class LoginScreen extends StatefulWidget {
-  const LoginScreen({super.key});
+class RegisterScreen extends StatefulWidget {
+  const RegisterScreen({super.key});
 
   @override
-  State<LoginScreen> createState() => _LoginScreenState();
+  State<RegisterScreen> createState() => _RegisterScreenState();
 }
 
-class _LoginScreenState extends State<LoginScreen> {
+class _RegisterScreenState extends State<RegisterScreen> {
   final _formKey = GlobalKey<FormState>();
+  final TextEditingController _nameController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
-  
+
   bool _isLoading = false;
 
   final AuthService _authService = AuthService();
 
-  Future<void> _login() async {
+  Future<void> _register() async {
     if (_formKey.currentState!.validate()) {
       setState(() {
         _isLoading = true;
       });
 
-      final session = await _authService.login(
+      final user = await _authService.register(
+        name: _nameController.text,
         email: _emailController.text,
         password: _passwordController.text,
       );
@@ -33,12 +35,14 @@ class _LoginScreenState extends State<LoginScreen> {
         _isLoading = false;
       });
 
-      if (session != null) {
-        // Si el login es exitoso, redirige a la pantalla principal
-        Navigator.pushReplacementNamed(context, '/nextScreen');
+      if (user != null) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Registro exitoso. Inicia sesión.')),
+        );
+        Navigator.pushReplacementNamed(context, '/login');
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Error al iniciar sesión')),
+          const SnackBar(content: Text('Error al registrarse')),
         );
       }
     }
@@ -54,16 +58,34 @@ class _LoginScreenState extends State<LoginScreen> {
           child: Form(
             key: _formKey,
             child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 Image.asset(
-                  'assets/images/logo.png', // Ajusta la ruta de tu logo
+                  'assets/images/logo.png',
                   height: 120,
                 ),
                 const SizedBox(height: 40),
-                
-                // Campo de correo electrónico
+
+                // Nombre
+                TextFormField(
+                  controller: _nameController,
+                  decoration: InputDecoration(
+                    labelText: 'Nombre completo',
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(12.0),
+                    ),
+                    prefixIcon: const Icon(Icons.person_outline),
+                  ),
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Ingresa tu nombre';
+                    }
+                    return null;
+                  },
+                ),
+                const SizedBox(height: 20),
+
+                // Correo
                 TextFormField(
                   controller: _emailController,
                   keyboardType: TextInputType.emailAddress,
@@ -83,7 +105,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 ),
                 const SizedBox(height: 20),
 
-                // Campo de contraseña
+                // Contraseña
                 TextFormField(
                   controller: _passwordController,
                   obscureText: true,
@@ -96,14 +118,15 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
-                      return 'Ingresa tu contraseña';
+                      return 'Ingresa una contraseña';
+                    } else if (value.length < 6) {
+                      return 'La contraseña debe tener al menos 6 caracteres';
                     }
                     return null;
                   },
                 ),
                 const SizedBox(height: 30),
 
-                // Botón de iniciar sesión
                 ElevatedButton(
                   style: ElevatedButton.styleFrom(
                     backgroundColor: const Color(0xFF42A5F5),
@@ -113,11 +136,11 @@ class _LoginScreenState extends State<LoginScreen> {
                     ),
                     elevation: 4,
                   ),
-                  onPressed: _isLoading ? null : _login,
+                  onPressed: _isLoading ? null : _register,
                   child: _isLoading
                       ? const CircularProgressIndicator(color: Colors.white)
                       : Text(
-                          'Iniciar Sesión',
+                          'Registrarse',
                           style: GoogleFonts.roboto(
                             fontSize: 18,
                             fontWeight: FontWeight.w600,
@@ -126,18 +149,6 @@ class _LoginScreenState extends State<LoginScreen> {
                         ),
                 ),
                 const SizedBox(height: 20),
-
-                TextButton(
-                  onPressed: () {
-                    Navigator.pushReplacementNamed(context, '/register');
-                  },
-                  child: Text(
-                    '¿No tienes cuenta? Regístrate',
-                    style: GoogleFonts.roboto(
-                      color: const Color(0xFF42A5F5),
-                    ),
-                  ),
-                ),
               ],
             ),
           ),

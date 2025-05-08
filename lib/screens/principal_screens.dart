@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'camera_screen.dart'; // Asegúrate de importar la pantalla de la cámara
 
 class PrincipalScreen extends StatelessWidget {
   @override
@@ -101,7 +102,13 @@ class PrincipalScreen extends StatelessWidget {
               icon: Icons.camera_alt_outlined,
               title: "Tomar Foto",
               subtitle: "Realiza un nuevo análisis dérmico",
-              onTap: () {},
+              onTap: () {
+                // Aquí navegamos a la pantalla de la cámara
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => CameraScreen()),
+                );
+              },
             ),
             const SizedBox(height: 20),
             _PremiumOptionCard(

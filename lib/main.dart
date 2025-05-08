@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:tudiagnostico/screens/home_screens';
+import 'package:tudiagnostico/screens/home_screens.dart';
 import 'package:tudiagnostico/screens/login_screen.dart';
-import 'package:tudiagnostico/screens/principal_screens.dart'; // Asegúrate del nombre correcto
-
+import 'package:tudiagnostico/screens/principal_screens.dart'; 
+import 'package:tudiagnostico/screens/register_screen.dart';
+import 'package:tudiagnostico/screens/camera_screen.dart'; // Asegúrate de importar la pantalla de la cámara
 
 void main() {
   runApp(MyApp());
@@ -12,18 +13,20 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      debugShowCheckedModeBanner: false, // Oculta el banner DEBUG
+      debugShowCheckedModeBanner: false,
       title: 'TuDiagnóstico',
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.blueAccent),
-        useMaterial3: true, // Habilita Material 3 para un diseño más moderno
-        fontFamily: 'Roboto', // Puedes personalizar aquí la fuente si deseas
+        useMaterial3: true,
+        fontFamily: 'Roboto',
       ),
       initialRoute: '/',
       routes: {
         '/': (context) => HomeScreen(),
-        '/nextScreen': (context) => PrincipalScreen(),
+        '/nextScreen': (context) => PrincipalScreen(), // Pantalla principal
         '/login': (context) => LoginScreen(),
+        '/register': (context) => const RegisterScreen(),
+        '/camera': (context) => CameraScreen(),  // Ruta para la cámara
       },
     );
   }

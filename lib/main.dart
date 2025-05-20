@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:tudiagnostico/screens/home_screens.dart';
 import 'package:tudiagnostico/screens/login_screen.dart';
-import 'package:tudiagnostico/screens/principal_screens.dart'; 
+import 'package:tudiagnostico/screens/principal_screens.dart';
 import 'package:tudiagnostico/screens/register_screen.dart';
-import 'package:tudiagnostico/screens/camera_screen.dart'; // Asegúrate de importar la pantalla de la cámara
+import 'package:tudiagnostico/screens/camera_screen.dart';
+import 'package:tudiagnostico/screens/ajustes_screen.dart'; // Nueva importación
+import 'package:tudiagnostico/screens/historial_screen.dart'; // Importa la pantalla del historial
 
 void main() {
   runApp(MyApp());
@@ -23,10 +25,12 @@ class MyApp extends StatelessWidget {
       initialRoute: '/',
       routes: {
         '/': (context) => HomeScreen(),
-        '/nextScreen': (context) => PrincipalScreen(), // Pantalla principal
+        '/nextScreen': (context) => PrincipalScreen(),
         '/login': (context) => LoginScreen(),
         '/register': (context) => const RegisterScreen(),
-        '/camera': (context) => CameraScreen(),  // Ruta para la cámara
+        '/camera': (context) => CameraScreen(),
+        '/ajustes': (context) => AjustesScreen(), // Nueva ruta agregada
+        '/historial': (context) => HistorialScreen(), // Nueva ruta para el historial
       },
     );
   }

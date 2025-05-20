@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'camera_screen.dart'; // Asegúrate de importar la pantalla de la cámara
+import 'camera_screen.dart';
+import 'historial_screen.dart'; // Importa la pantalla del historial
 
 class PrincipalScreen extends StatelessWidget {
   @override
@@ -9,7 +10,7 @@ class PrincipalScreen extends StatelessWidget {
       extendBodyBehindAppBar: false,
       backgroundColor: const Color(0xFFF5F9FF),
       appBar: PreferredSize(
-        preferredSize: Size.fromHeight(70),
+        preferredSize: const Size.fromHeight(70),
         child: Container(
           decoration: const BoxDecoration(
             gradient: LinearGradient(
@@ -32,17 +33,16 @@ class PrincipalScreen extends StatelessWidget {
             child: Row(
               children: [
                 IconButton(
-                  icon: Icon(Icons.menu, color: Colors.white),
+                  icon: const Icon(Icons.menu, color: Colors.white),
                   onPressed: () {},
                 ),
-                const Spacer(), // Eliminar TUDIAGNÓSTICO
+                const Spacer(),
                 TextButton(
                   onPressed: () {
-                    // Navegar a la pantalla de Login al presionar el botón
                     Navigator.pushReplacementNamed(context, '/login');
                   },
                   child: Row(
-                    mainAxisSize: MainAxisSize.min, // El ícono y el texto estarán juntos
+                    mainAxisSize: MainAxisSize.min,
                     children: [
                       Text(
                         "Iniciar Sesión",
@@ -53,11 +53,7 @@ class PrincipalScreen extends StatelessWidget {
                         ),
                       ),
                       const SizedBox(width: 8),
-                      Icon(
-                        Icons.login, // Ícono que resalta el botón
-                        color: Colors.white,
-                        size: 18,
-                      ),
+                      const Icon(Icons.login, color: Colors.white, size: 18),
                     ],
                   ),
                 ),
@@ -72,9 +68,8 @@ class PrincipalScreen extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            // Mensaje de bienvenida con un pequeño ajuste hacia la izquierda
             Padding(
-              padding: const EdgeInsets.only(right: 10), // Ajustar el padding aquí
+              padding: const EdgeInsets.only(right: 10),
               child: Text(
                 "Bienvenido, Usuario 👋",
                 style: GoogleFonts.raleway(
@@ -86,7 +81,7 @@ class PrincipalScreen extends StatelessWidget {
             ),
             const SizedBox(height: 10),
             Padding(
-              padding: const EdgeInsets.only(right: 12), // Ajustar el padding aquí
+              padding: const EdgeInsets.only(right: 12),
               child: Text(
                 "Selecciona una opción para continuar",
                 style: GoogleFonts.openSans(
@@ -97,13 +92,12 @@ class PrincipalScreen extends StatelessWidget {
             ),
             const SizedBox(height: 50),
 
-            // Botones principales
+            // Opción: Tomar Foto
             _PremiumOptionCard(
               icon: Icons.camera_alt_outlined,
               title: "Tomar Foto",
               subtitle: "Realiza un nuevo análisis dérmico",
               onTap: () {
-                // Aquí navegamos a la pantalla de la cámara
                 Navigator.push(
                   context,
                   MaterialPageRoute(builder: (context) => CameraScreen()),
@@ -111,18 +105,29 @@ class PrincipalScreen extends StatelessWidget {
               },
             ),
             const SizedBox(height: 20),
+
+            // Opción: Historial
             _PremiumOptionCard(
               icon: Icons.history,
               title: "Historial",
-              subtitle: "Consulta tus análisis anteriores",
-              onTap: () {},
+              subtitle: "Mira tus diagnósticos anteriores",
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => HistorialScreen()), // Navega a HistorialScreen
+                );
+              },
             ),
             const SizedBox(height: 20),
+
+            // Opción: Ajustes
             _PremiumOptionCard(
               icon: Icons.settings,
               title: "Ajustes",
               subtitle: "Configura tu experiencia en la app",
-              onTap: () {},
+              onTap: () {
+                Navigator.pushNamed(context, '/ajustes');
+              },
             ),
           ],
         ),
@@ -131,7 +136,6 @@ class PrincipalScreen extends StatelessWidget {
   }
 }
 
-/// Tarjeta elegante para opciones del menú
 class _PremiumOptionCard extends StatelessWidget {
   final IconData icon;
   final String title;
@@ -154,8 +158,8 @@ class _PremiumOptionCard extends StatelessWidget {
       child: InkWell(
         borderRadius: BorderRadius.circular(16),
         onTap: onTap,
-        splashColor: Color(0xFF90CAF9).withOpacity(0.3),
-        child: Padding( // Usamos Padding directamente en el InkWell en lugar de un Container con altura fija
+        splashColor: const Color(0xFF90CAF9).withOpacity(0.3),
+        child: Padding(
           padding: const EdgeInsets.all(20),
           child: Row(
             children: [
@@ -165,14 +169,14 @@ class _PremiumOptionCard extends StatelessWidget {
                   shape: BoxShape.circle,
                 ),
                 padding: const EdgeInsets.all(12),
-                child: Icon(icon, size: 30, color: Color(0xFF1976D2)),
+                child: Icon(icon, size: 30, color: const Color(0xFF1976D2)),
               ),
               const SizedBox(width: 20),
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisAlignment: MainAxisAlignment.center,
-                  mainAxisSize: MainAxisSize.min, // Añadido para asegurar que la columna no ocupe espacio vertical innecesario
+                  mainAxisSize: MainAxisSize.min,
                   children: [
                     Text(
                       title,

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import '../appwrite/auth_service.dart'; // Ajusta la ruta si es necesario
+import '../appwrite/auth_service.dart';
+import '../widgets/register_widgets.dart'; // 👈 Importa el widget extraído
 
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({super.key});
@@ -14,7 +15,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
-
   bool _isLoading = false;
 
   final AuthService _authService = AuthService();
@@ -60,67 +60,41 @@ class _RegisterScreenState extends State<RegisterScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                Image.asset(
-                  'assets/images/logo.png',
-                  height: 120,
-                ),
+                Image.asset('assets/images/logo.png', height: 120),
                 const SizedBox(height: 40),
 
-                // Nombre
-                TextFormField(
+                // Campo: Nombre
+                CustomTextField(
                   controller: _nameController,
-                  decoration: InputDecoration(
-                    labelText: 'Nombre completo',
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(12.0),
-                    ),
-                    prefixIcon: const Icon(Icons.person_outline),
-                  ),
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Ingresa tu nombre';
-                    }
-                    return null;
-                  },
+                  labelText: 'Nombre completo',
+                  prefixIcon: Icons.person_outline,
+                  validator: (value) =>
+                      value == null || value.isEmpty ? 'Ingresa tu nombre' : null,
                 ),
                 const SizedBox(height: 20),
 
-                // Correo
-                TextFormField(
+                // Campo: Correo
+                CustomTextField(
                   controller: _emailController,
+                  labelText: 'Correo Electrónico',
+                  prefixIcon: Icons.email_outlined,
                   keyboardType: TextInputType.emailAddress,
-                  decoration: InputDecoration(
-                    labelText: 'Correo Electrónico',
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(12.0),
-                    ),
-                    prefixIcon: const Icon(Icons.email_outlined),
-                  ),
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Ingresa tu correo electrónico';
-                    }
-                    return null;
-                  },
+                  validator: (value) =>
+                      value == null || value.isEmpty ? 'Ingresa tu correo electrónico' : null,
                 ),
                 const SizedBox(height: 20),
 
-                // Contraseña
-                TextFormField(
+                // Campo: Contraseña
+                CustomTextField(
                   controller: _passwordController,
+                  labelText: 'Contraseña',
+                  prefixIcon: Icons.lock_outline,
                   obscureText: true,
-                  decoration: InputDecoration(
-                    labelText: 'Contraseña',
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(12.0),
-                    ),
-                    prefixIcon: const Icon(Icons.lock_outline),
-                  ),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
                       return 'Ingresa una contraseña';
                     } else if (value.length < 6) {
-                      return 'La contraseña debe tener al menos 6 caracteres';
+                      return 'Debe tener al menos 6 caracteres';
                     }
                     return null;
                   },
